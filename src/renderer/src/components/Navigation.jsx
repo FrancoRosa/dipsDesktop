@@ -9,6 +9,7 @@ import {
 import Theme from './Theme'
 import PropTypes from 'prop-types'
 import ButtonIcon from './elements/ButtonIcon'
+import { sanitizer } from '../js/parser'
 // import { start, stop, keep } from "../js/record";
 // import Button from "./elements/Button";
 const handlePower = () => {
@@ -23,10 +24,12 @@ const handleQuit = () => {
 
 const Navigation = ({ page, setPage, result }) => {
   const handleDownload = () => {
+    const sanitized = sanitizer(result)
+
     const now = new Date()
     const filename =
       now.toLocaleString('sv').replace(/[:.]/g, '').replace(/[-.]/g, '').replace(' ', '_') + '.txt'
-    const blob = new Blob([result], { type: 'text/plain' })
+    const blob = new Blob([sanitized], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
 
     const a = document.createElement('a')

@@ -56,14 +56,14 @@ export const comHandler = (emitter, config) => {
     inProgress = false
     silenceCount = 0
     emitter(response)
-    emitter(`${start()} completed ${currentTask}`)
+    emitter(`... ${start()} completed ${currentTask}`)
     response = ''
-    emitter('________________________________________')
+    emitter('... ________________________________________')
   }
 
   client.connect(port, host, () => {
     emitter(`... telnet connected! ${(host, port)}`)
-    emitter('connected to veeder root')
+    emitter('... connected to veeder root')
   })
 
   process = setInterval(() => {
@@ -75,7 +75,7 @@ export const comHandler = (emitter, config) => {
       }
       currentTask = tasks.shift()
       if (currentTask) {
-        emitter(`${start()} processing ${currentTask}`)
+        emitter(`... ${start()} processing ${currentTask}`)
         client.write(currentTask + '\r')
         inProgress = true
       }
