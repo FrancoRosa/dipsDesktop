@@ -4,16 +4,34 @@ import useLocal from './js/storage'
 import Navigation from './components/Navigation'
 import Button from './components/elements/Button'
 
-const initConfig = {
-  ip: '192.168.1.4',
-  port: '10000',
-  commands: ['\x01I5P100', '\x01I60100', '\x01I70100', '\x01I62200', '\x0162300']
-}
+// const initConfig = {
+//   ip: '192.168.1.4',
+//   port: '10000',
+//   commands: ['\x01I5P100', '\x01I60100', '\x01I70100', '\x01I62200', '\x0162300']
+// }
 // const initConfig = {
 //   ip: 'telehack.com',
 //   port: '23',
 //   commands: ['date', 'uptime']
 // }
+
+const initConfig = {
+  id: 100,
+  process_name: 'dips',
+  name: 'New dips site',
+  email: {
+    time: ['06:00:00', '12:00:00'],
+    receivers: ['kn.electrical.services@gmail.com']
+  },
+  webport: 10004,
+  modbus_port: 503,
+  veeder: {
+    port: 10001,
+    ip: '192.168.0.4',
+    tank_offset: 0,
+    model: 350
+  }
+}
 
 function App() {
   const [page, setPage] = useState('main') //main, config, reports
@@ -61,8 +79,10 @@ function App() {
               <Button onClick={handleClear} label="Clear" />
             </div>
             <br />
-            <h3 className="mt-4 text-center text-lime-700">Current settings</h3>
-            <pre className="text-lime-700">{JSON.stringify(config, null, 2)}</pre>
+            <h3 className="mt-4 text-center text-lime-700">Current settings:</h3>
+            <pre className="text-lime-700 hide-scrollbar h-full overflow-scroll scroll-smooth text-xs">
+              {JSON.stringify(config, null, 2)}
+            </pre>
           </aside>
           <section className="w-3/4 p-4">
             <pre ref={containerRef} className="hide-scrollbar h-full overflow-scroll scroll-smooth">
