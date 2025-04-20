@@ -1,9 +1,10 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, Tray, Menu } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { comHandler } from './helper'
 const { exec } = require('child_process')
+let tray
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -19,6 +20,7 @@ function createWindow() {
   })
 
   mainWindow.on('ready-to-show', () => {
+    console.log('ready to show')
     mainWindow.show()
   })
 
@@ -60,6 +62,42 @@ app.whenReady().then(() => {
 
   const window = createWindow()
 
+  window.on('close', (event) => {
+    if (!app.isQuitting) {
+      event.preventDefault()
+      window.hide() // or mainWindow.minimize()
+    }
+  })
+
+  tray = new Tray(icon) // should be a .ico or .png
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Open',
+      click: () => {
+        window.show()
+      }
+    },
+    {
+      label: 'Quit',
+      click: () => {
+        console.log('destroy')
+        tray.destroy()
+        app.isQuitting = true
+        app.quit()
+      }
+    }
+  ])
+  tray.setToolTip('Dips Desktop')
+  tray.setContextMenu(contextMenu)
+
+  tray.on('click', () => {
+    window.isVisible() ? window.hide() : window.show()
+  })
+  app.on('before-quit', () => {
+    console.log('... before-quit')
+    tray.destroy()
+  })
+
   // IPC connector
   ipcMain.on('quit', () => app.quit())
   ipcMain.on('start', (e, payload) => {
@@ -97,6 +135,8 @@ app.whenReady().then(() => {
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
+    console.log('_________--')
+    console.log(BrowserWindow.getAllWindows().length)
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 })
@@ -105,9 +145,12 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
+  console.log('... window-all-closed')
   if (process.platform !== 'darwin') {
     app.quit()
   }
+  tray.destroy()
+  app.quit()
 })
 
 // In this file you can include the rest of your app's specific main process
