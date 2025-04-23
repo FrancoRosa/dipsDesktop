@@ -1,26 +1,7 @@
-import {
-  ArrowBigLeft,
-  CircleXIcon,
-  CogIcon,
-  DownloadIcon,
-  FileBarChart2Icon,
-  PowerOffIcon
-} from 'lucide-react'
-import Theme from './Theme'
+import { ArrowBigLeft, CogIcon, DownloadIcon, FuelIcon } from 'lucide-react'
 import PropTypes from 'prop-types'
 import ButtonIcon from './elements/ButtonIcon'
 import { sanitizer } from '../js/parser'
-// import { start, stop, keep } from "../js/record";
-// import Button from "./elements/Button";
-const handlePower = () => {
-  console.log('power_off')
-  window.electron.ipcRenderer.send('power_off')
-}
-
-const handleQuit = () => {
-  console.log('quit')
-  window.electron.ipcRenderer.send('quit')
-}
 
 const Navigation = ({ page, setPage, result }) => {
   const handleDownload = () => {
@@ -48,6 +29,9 @@ const Navigation = ({ page, setPage, result }) => {
             <ButtonIcon onClick={handleDownload}>
               <DownloadIcon />
             </ButtonIcon>
+            <ButtonIcon onClick={() => setPage('fuel')}>
+              <FuelIcon />
+            </ButtonIcon>
             <ButtonIcon onClick={() => setPage('config')}>
               <CogIcon />
             </ButtonIcon>
@@ -64,7 +48,8 @@ const Navigation = ({ page, setPage, result }) => {
 
 Navigation.propTypes = {
   page: PropTypes.string.isRequired,
-  setPage: PropTypes.func.isRequired
+  setPage: PropTypes.func.isRequired,
+  result: PropTypes.string.isRequired
 }
 
 export default Navigation

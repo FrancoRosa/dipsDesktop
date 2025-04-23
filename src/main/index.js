@@ -20,7 +20,6 @@ function createWindow() {
   })
 
   mainWindow.on('ready-to-show', () => {
-    console.log('ready to show')
     mainWindow.show()
   })
 
@@ -94,7 +93,6 @@ app.whenReady().then(() => {
     window.isVisible() ? window.hide() : window.show()
   })
   app.on('before-quit', () => {
-    console.log('... before-quit')
     tray.destroy()
   })
 

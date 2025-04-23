@@ -3,17 +3,7 @@ import Config from './components/Config'
 import useLocal from './js/storage'
 import Navigation from './components/Navigation'
 import Button from './components/elements/Button'
-
-// const initConfig = {
-//   ip: '192.168.1.4',
-//   port: '10000',
-//   commands: ['\x01I5P100', '\x01I60100', '\x01I70100', '\x01I62200', '\x0162300']
-// }
-// const initConfig = {
-//   ip: 'telehack.com',
-//   port: '23',
-//   commands: ['date', 'uptime']
-// }
+import Tanks from './components/Tanks'
 
 const initConfig = {
   id: 100,
@@ -63,12 +53,16 @@ function App() {
 
   useEffect(() => {
     const { current } = containerRef
-    current.scrollTop = current.scrollHeight
+    current.scrollTop = current?.scrollHeight
   }, [result])
+
+  const dipsData = { data: 22 }
 
   return (
     <div className=" text-slate-900 bg-slate-400 dark:text-lime-400 dark:bg-slate-900 text-sm flex flex-col  items-center h-screen">
       <Navigation {...{ page, setPage, result }} />
+
+      {page === 'fuel' && <Tanks {...{ dipsData }} />}
 
       {page === 'config' && <Config {...{ config, setConfig }} />}
       {page === 'main' && (
