@@ -1,11 +1,18 @@
 import PropTypes from 'prop-types'
 import Clock from './Clock'
+import Info from './Info'
+import Latest from './Latest'
 
-const Tanks = ({ dipsData = { data: 1 } }) => {
+const Tanks = ({ location, lastRecord }) => {
   return (
     <div className="flex flex-col gap-4 justify-center items-center h-full overflow-scroll hide-scrollbar">
       <Clock />
-      <pre>{JSON.stringify(dipsData, null, 2)}</pre>
+      <div className="p-4">
+        <Info location={location} />
+        <div className="lg:w-[720px]">
+          <Latest lastRecord={lastRecord} />
+        </div>
+      </div>
     </div>
   )
 }
